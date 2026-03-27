@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 
 const RED = '#CC2027';
 const DARK = '#111111';
 
+// ─── MILESTONE DEFINITIONS (add new entries here to extend the timeline) ─────
 const MILESTONES = [
   { id: 'today', label: 'Today',       date: 'Mar 2026', feature: 'App tiles',             tag: null   },
   { id: 'apr',   label: 'April 2026',  date: 'Apr 2026', feature: 'Director Appointment',  tag: 'HUC1' },
-  { id: 'eq2',   label: 'Early Q2',    date: 'May 2026', feature: 'Connected Compliance',  tag: null   },
+  { id: 'eq2',   label: 'Early Q2',    date: 'May 2026', feature: 'Connected Compliance',  tag: 'HUC8' },
   { id: 'lq2',   label: 'Late Q2',     date: 'Jun 2026', feature: 'AAR Workflow',           tag: 'HUC5' },
+  { id: 'q3p',   label: 'Q3+',         date: 'Jul 2026', feature: 'Agent Monitoring',       tag: null   },
 ];
 
+// ─── ICON ─────────────────────────────────────────────────────────────────────
 function Icon({ d, size = 24, color = RED, sw = 1.8 }: {
   d: string; size?: number; color?: string; sw?: number;
 }) {
@@ -21,6 +24,7 @@ function Icon({ d, size = 24, color = RED, sw = 1.8 }: {
   );
 }
 
+// ─── ICON PATH LIBRARY ────────────────────────────────────────────────────────
 const P: Record<string, string> = {
   menu:       'M4 6h16M4 12h16M4 18h16',
   home:       'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
@@ -49,6 +53,7 @@ const P: Record<string, string> = {
   chat:       'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z',
 };
 
+// ─── MY APPS MENU ─────────────────────────────────────────────────────────────
 const MY_APPS = [
   { name: 'Home',            iconPath: P.archive,  starred: true  },
   { name: 'Activity Center', iconPath: P.bell,     starred: true  },
@@ -61,41 +66,76 @@ const MY_APPS = [
 function MyAppsPanel() {
   return (
     <div style={{
-      position: 'absolute', top: 'calc(100% + 8px)', left: 0, zIndex: 100,
-      width: 320, backgroundColor: 'white', borderRadius: 12,
+      position: 'absolute',
+      top: 'calc(100% + 8px)',
+      left: 0,
+      zIndex: 100,
+      width: 320,
+      backgroundColor: 'white',
+      borderRadius: 12,
       boxShadow: '0 8px 32px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.07)',
-      paddingBottom: 8, overflow: 'hidden',
+      paddingBottom: 8,
+      overflow: 'hidden',
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 20px 14px' }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '18px 20px 14px',
+      }}>
         <span style={{ fontWeight: 700, fontSize: 16, color: '#111827' }}>My Apps</span>
-        <button style={{ background: 'none', border: '1.5px solid #d1d5db', borderRadius: 8, padding: '5px 12px',
-          cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 500, color: '#374151' }}>
+        <button style={{
+          background: 'none',
+          border: '1.5px solid #d1d5db',
+          borderRadius: 8,
+          padding: '5px 12px',
+          cursor: 'pointer',
+          display: 'flex', alignItems: 'center', gap: 6,
+          fontSize: 13, fontWeight: 500, color: '#374151',
+        }}>
           Rearrange
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
             <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
           </svg>
         </button>
       </div>
+
       <div style={{ padding: '0 20px 4px' }}>
         <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 5 }}>Search apps</div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1.5px solid #d1d5db', borderRadius: 8, padding: '8px 12px' }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 8,
+          border: '1.5px solid #d1d5db', borderRadius: 8,
+          padding: '8px 12px',
+        }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="#9ca3af" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
           </svg>
           <span style={{ fontSize: 14, color: '#9ca3af' }}>Search my name</span>
         </div>
       </div>
+
       <div style={{ maxHeight: 320, overflowY: 'auto', marginTop: 8 }}>
         {MY_APPS.map((app) => (
-          <div key={app.name} style={{ display: 'flex', alignItems: 'center', padding: '9px 20px', gap: 14, cursor: 'pointer' }}>
-            <div style={{ width: 44, height: 44, borderRadius: 10, border: '1.5px solid #e5e7eb',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <div key={app.name} style={{
+            display: 'flex', alignItems: 'center',
+            padding: '9px 20px', gap: 14, cursor: 'pointer',
+          }}>
+            <div style={{
+              width: 44, height: 44, borderRadius: 10,
+              border: '1.5px solid #e5e7eb',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0,
+            }}>
               <Icon d={app.iconPath} size={22} color="#374151" sw={1.5} />
             </div>
             <span style={{ flex: 1, fontSize: 15, color: '#111827' }}>{app.name}</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill={app.starred ? '#111827' : 'none'}
-              stroke="#111827" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24"
+              fill={app.starred ? '#111827' : 'none'}
+              stroke="#111827" strokeWidth="1.5"
+              strokeLinecap="round" strokeLinejoin="round"
+            >
               <path d={P.star} />
             </svg>
           </div>
@@ -109,21 +149,31 @@ function BentoButton({ dotColor = '#6b7280' }: { dotColor?: string }) {
   const [bentoOpen, setBentoOpen] = useState(false);
   return (
     <div style={{ position: 'relative' }}>
-      <button onClick={() => setBentoOpen((v) => !v)} style={{
-        background: bentoOpen ? '#f3f4f6' : 'none', border: 'none', cursor: 'pointer',
-        padding: '6px 7px', borderRadius: 7, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.15s',
-      }}>
+      <button
+        onClick={() => setBentoOpen((v) => !v)}
+        style={{
+          background: bentoOpen ? '#f3f4f6' : 'none',
+          border: 'none', cursor: 'pointer',
+          padding: '6px 7px', borderRadius: 7,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          transition: 'background 0.15s',
+        }}
+      >
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
           {([2.5, 7.5, 12.5] as number[]).flatMap((cx) =>
             ([2.5, 7.5, 12.5] as number[]).map((cy) => (
-              <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="1.5" fill={bentoOpen ? '#111827' : dotColor} />
+              <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="1.5"
+                fill={bentoOpen ? '#111827' : dotColor} />
             ))
           )}
         </svg>
       </button>
       {bentoOpen && (
         <>
-          <div onClick={() => setBentoOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 99 }} />
+          <div
+            onClick={() => setBentoOpen(false)}
+            style={{ position: 'fixed', inset: 0, zIndex: 99 }}
+          />
           <MyAppsPanel />
         </>
       )}
@@ -131,29 +181,49 @@ function BentoButton({ dotColor = '#6b7280' }: { dotColor?: string }) {
   );
 }
 
+// ─── HOMEPAGE DATA PER MILESTONE ──────────────────────────────────────────────
 interface Tile { name: string; icon: string; isNew?: boolean; }
 interface PageData { boardsGov: Tile[]; riskStrategy: Tile[]; auditAnalytics: Tile[]; }
 
 function getPageData(id: string): PageData {
   const boardsGov: Tile[] = [
-    { name: 'Boards', icon: P.users }, { name: 'BoardEffect', icon: P.document }, { name: 'Community', icon: P.globe },
+    { name: 'Boards',      icon: P.users    },
+    { name: 'BoardEffect', icon: P.document },
+    { name: 'Community',   icon: P.globe    },
   ];
   const riskStrategy: Tile[] = [
-    { name: 'Risk Manager', icon: P.shield }, { name: 'AI Risk Essentials', icon: P.target },
-    { name: 'Asset Manager', icon: P.archive }, { name: 'Strategy', icon: P.chart }, { name: 'Asset Inventory', icon: P.collection },
+    { name: 'Risk Manager',       icon: P.shield     },
+    { name: 'AI Risk Essentials', icon: P.target     },
+    { name: 'Asset Manager',      icon: P.archive    },
+    { name: 'Strategy',           icon: P.chart      },
+    { name: 'Asset Inventory',    icon: P.collection },
   ];
   const auditAnalytics: Tile[] = [
-    { name: 'Results', icon: P.check }, { name: 'Fieldwork', icon: P.clipboard }, { name: 'Robots', icon: P.cpu },
-    { name: 'Checklists', icon: P.document }, { name: 'Storyboards', icon: P.chart }, { name: 'Scripts', icon: P.collection },
+    { name: 'Results',     icon: P.check     },
+    { name: 'Fieldwork',   icon: P.clipboard },
+    { name: 'Robots',      icon: P.cpu       },
+    { name: 'Checklists',  icon: P.document  },
+    { name: 'Storyboards', icon: P.chart     },
+    { name: 'Scripts',     icon: P.collection },
   ];
+
   if (id === 'today') return { boardsGov, riskStrategy, auditAnalytics };
-  if (id === 'apr') return { boardsGov: [...boardsGov, { name: 'Director Appointment', icon: P.userAdd, isNew: true }], riskStrategy, auditAnalytics };
-  if (id === 'eq2') return { boardsGov: [...boardsGov, { name: 'Director Appointment', icon: P.userAdd }], riskStrategy, auditAnalytics };
-  return { boardsGov: [...boardsGov, { name: 'Director Appointment', icon: P.userAdd }], riskStrategy, auditAnalytics: [...auditAnalytics, { name: 'Audit Report AI', icon: P.sparkles, isNew: true }] };
+  if (id === 'apr')   return { boardsGov: [...boardsGov, { name: 'Director Appointment', icon: P.userAdd, isNew: true }], riskStrategy, auditAnalytics };
+  if (id === 'eq2')   return { boardsGov: [...boardsGov, { name: 'Director Appointment', icon: P.userAdd }], riskStrategy, auditAnalytics };
+  return {
+    boardsGov: [...boardsGov, { name: 'Director Appointment', icon: P.userAdd }],
+    riskStrategy,
+    auditAnalytics: [...auditAnalytics, { name: 'Audit Report AI', icon: P.sparkles, isNew: true }],
+  };
 }
 
+// ─── COMPONENTS ───────────────────────────────────────────────────────────────
+
 function NewBadge() {
-  return <span style={{ backgroundColor: RED, color: 'white', fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 8, letterSpacing: '0.05em', flexShrink: 0 }}>NEW</span>;
+  return (
+    <span style={{ backgroundColor: RED, color: 'white', fontSize: 9, fontWeight: 700,
+      padding: '2px 6px', borderRadius: 8, letterSpacing: '0.05em', flexShrink: 0 }}>NEW</span>
+  );
 }
 
 function AppTile({ name, icon, isNew = false }: Tile) {
@@ -164,8 +234,12 @@ function AppTile({ name, icon, isNew = false }: Tile) {
         gap: 8, padding: '20px 12px', width: 120, backgroundColor: 'white',
         border: `1px solid ${hovered ? '#c9cdd3' : '#e5e7eb'}`, borderRadius: 8,
         cursor: 'pointer', position: 'relative', flexShrink: 0,
-        boxShadow: hovered ? '0 2px 8px rgba(0,0,0,0.07)' : 'none', transition: 'box-shadow 0.15s, border-color 0.15s' }}>
-      {isNew && <div style={{ position: 'absolute', top: 6, right: 6, backgroundColor: RED, color: 'white', fontSize: 9, fontWeight: 700, padding: '2px 5px', borderRadius: 8 }}>NEW</div>}
+        boxShadow: hovered ? '0 2px 8px rgba(0,0,0,0.07)' : 'none',
+        transition: 'box-shadow 0.15s, border-color 0.15s' }}>
+      {isNew && (
+        <div style={{ position: 'absolute', top: 6, right: 6, backgroundColor: RED, color: 'white',
+          fontSize: 9, fontWeight: 700, padding: '2px 5px', borderRadius: 8 }}>NEW</div>
+      )}
       <Icon d={icon} size={28} color={RED} sw={1.8} />
       <span style={{ fontSize: 12, color: '#374151', fontWeight: 500, textAlign: 'center', lineHeight: 1.3 }}>{name}</span>
     </div>
@@ -173,13 +247,19 @@ function AppTile({ name, icon, isNew = false }: Tile) {
 }
 
 function TilesRow({ tiles }: { tiles: Tile[] }) {
-  return <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>{tiles.map(t => <AppTile key={t.name} name={t.name} icon={t.icon} isNew={t.isNew} />)}</div>;
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+      {tiles.map(t => <AppTile key={t.name} name={t.name} icon={t.icon} isNew={t.isNew} />)}
+    </div>
+  );
 }
 
 function SectionHead({ a, b, isNew = false }: { a: string; b: string; isNew?: boolean }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, marginTop: 32 }}>
-      <h2 style={{ fontSize: 19, fontWeight: 700, color: '#111827', margin: 0 }}>{a} & <span style={{ color: RED, fontWeight: 600 }}>{b}</span></h2>
+      <h2 style={{ fontSize: 19, fontWeight: 700, color: '#111827', margin: 0 }}>
+        {a} & <span style={{ color: RED, fontWeight: 600 }}>{b}</span>
+      </h2>
       {isNew && <NewBadge />}
     </div>
   );
@@ -187,15 +267,20 @@ function SectionHead({ a, b, isNew = false }: { a: string; b: string; isNew?: bo
 
 function Sidebar() {
   const items = [
-    { icon: P.menu, active: false }, { icon: P.home, active: true }, { icon: P.chart, active: false },
-    { icon: P.grid, active: false }, { icon: P.star, active: false }, { icon: P.document, active: false },
-    { icon: P.archive, active: false }, { icon: P.bell, active: false }, { icon: P.user, active: false }, { icon: P.cog, active: false },
+    { icon: P.menu, active: false }, { icon: P.home, active: true },
+    { icon: P.chart, active: false }, { icon: P.grid, active: false },
+    { icon: P.star, active: false }, { icon: P.document, active: false },
+    { icon: P.archive, active: false }, { icon: P.bell, active: false },
+    { icon: P.user, active: false }, { icon: P.cog, active: false },
   ];
   return (
-    <div style={{ width: 54, backgroundColor: DARK, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 14, gap: 2, flexShrink: 0 }}>
+    <div style={{ width: 54, backgroundColor: DARK, display: 'flex', flexDirection: 'column',
+      alignItems: 'center', paddingTop: 14, gap: 2, flexShrink: 0 }}>
       <div style={{ color: RED, fontWeight: 900, fontSize: 20, marginBottom: 18 }}>D</div>
       {items.map((item, i) => (
-        <div key={i} style={{ width: 38, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 6, backgroundColor: item.active ? RED : 'transparent', cursor: 'pointer' }}>
+        <div key={i} style={{ width: 38, height: 34, display: 'flex', alignItems: 'center',
+          justifyContent: 'center', borderRadius: 6,
+          backgroundColor: item.active ? RED : 'transparent', cursor: 'pointer' }}>
           <Icon d={item.icon} size={17} color={item.active ? 'white' : '#6b7280'} sw={2} />
         </div>
       ))}
@@ -205,11 +290,23 @@ function Sidebar() {
 
 function PfizerLogo({ size = 32 }: { size?: number }) {
   return (
-    <div style={{ width: size, height: size, borderRadius: '50%', backgroundColor: '#0060A9', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+    <div style={{
+      width: size, height: size, borderRadius: '50%',
+      backgroundColor: '#0060A9',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      flexShrink: 0,
+    }}>
       <svg width={size * 0.56} height={size * 0.56} viewBox="0 0 18 18" fill="none">
         {([0, 60, 120, 180, 240, 300] as number[]).map((angle) => {
           const rad = (angle * Math.PI) / 180;
-          return <line key={angle} x1={9 + 1.8 * Math.cos(rad)} y1={9 + 1.8 * Math.sin(rad)} x2={9 + 7.2 * Math.cos(rad)} y2={9 + 7.2 * Math.sin(rad)} stroke="white" strokeWidth="2.4" strokeLinecap="round" />;
+          return (
+            <line
+              key={angle}
+              x1={9 + 1.8 * Math.cos(rad)} y1={9 + 1.8 * Math.sin(rad)}
+              x2={9 + 7.2 * Math.cos(rad)} y2={9 + 7.2 * Math.sin(rad)}
+              stroke="white" strokeWidth="2.4" strokeLinecap="round"
+            />
+          );
         })}
       </svg>
     </div>
@@ -218,18 +315,40 @@ function PfizerLogo({ size = 32 }: { size?: number }) {
 
 function TopBar() {
   return (
-    <div style={{ height: 52, backgroundColor: 'white', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', padding: '0 20px', justifyContent: 'space-between', flexShrink: 0 }}>
+    <div style={{
+      height: 52, backgroundColor: 'white', borderBottom: '1px solid #e5e7eb',
+      display: 'flex', alignItems: 'center', padding: '0 20px',
+      justifyContent: 'space-between', flexShrink: 0,
+    }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <PfizerLogo size={32} />
-        <span style={{ fontWeight: 600, fontSize: 14, color: '#111827', whiteSpace: 'nowrap' }}>Pfizer Compliance</span>
+        <span style={{ fontWeight: 600, fontSize: 14, color: '#111827', whiteSpace: 'nowrap' }}>
+          Pfizer Compliance
+        </span>
         <BentoButton dotColor="#6b7280" />
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        {[P.question, P.cog, P.user].map((icon, i) => (
-          <button key={i} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 7, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Icon d={icon} size={20} color="#6b7280" sw={1.5} />
-          </button>
-        ))}
+        <button style={{
+          background: 'none', border: 'none', cursor: 'pointer',
+          padding: 7, borderRadius: 8,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <Icon d={P.question} size={20} color="#6b7280" sw={1.5} />
+        </button>
+        <button style={{
+          background: 'none', border: 'none', cursor: 'pointer',
+          padding: 7, borderRadius: 8,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <Icon d={P.cog} size={20} color="#6b7280" sw={1.5} />
+        </button>
+        <button style={{
+          background: 'none', border: 'none', cursor: 'pointer',
+          padding: 7, borderRadius: 8,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <Icon d={P.user} size={20} color="#6b7280" sw={1.5} />
+        </button>
       </div>
     </div>
   );
@@ -237,17 +356,55 @@ function TopBar() {
 
 function DirApptHeader() {
   return (
-    <div style={{ height: 64, backgroundColor: '#ffffff', borderBottom: '1px solid #E2E2E5', display: 'flex', alignItems: 'center', padding: '0 28px', justifyContent: 'space-between', flexShrink: 0 }}>
+    <div style={{
+      height: 64,
+      backgroundColor: '#ffffff',
+      borderBottom: '1px solid #E2E2E5',
+      display: 'flex',
+      alignItems: 'center',
+      padding: '0 28px',
+      justifyContent: 'space-between',
+      flexShrink: 0,
+    }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <PfizerLogo size={32} />
-        <span style={{ fontSize: 14, fontWeight: 600, color: '#242628', letterSpacing: '0.1px', whiteSpace: 'nowrap' }}>Pfizer Compliance</span>
+        <span style={{
+          fontSize: 14, fontWeight: 600, color: '#242628',
+          letterSpacing: '0.1px', whiteSpace: 'nowrap',
+        }}>
+          Pfizer Compliance
+        </span>
         <BentoButton dotColor="#242628" />
       </div>
+
       <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 7, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon d={P.question} size={20} color="#242628" sw={1.5} /></button>
-        <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 7, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon d={P.cog} size={20} color="#242628" sw={1.5} /></button>
-        <div style={{ width: 1, height: 32, backgroundColor: '#E2E2E5', margin: '0 10px', flexShrink: 0 }} />
-        <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 5, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon d={P.user} size={22} color="#242628" sw={1.5} /></button>
+        <button style={{
+          background: 'none', border: 'none', cursor: 'pointer',
+          padding: 7, borderRadius: 8,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <Icon d={P.question} size={20} color="#242628" sw={1.5} />
+        </button>
+        <button style={{
+          background: 'none', border: 'none', cursor: 'pointer',
+          padding: 7, borderRadius: 8,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <Icon d={P.cog} size={20} color="#242628" sw={1.5} />
+        </button>
+        <div style={{
+          width: 1, height: 32,
+          backgroundColor: '#E2E2E5',
+          margin: '0 10px',
+          flexShrink: 0,
+        }} />
+        <button style={{
+          background: 'none', border: 'none', cursor: 'pointer',
+          padding: 5, borderRadius: 8,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <Icon d={P.user} size={22} color="#242628" sw={1.5} />
+        </button>
       </div>
     </div>
   );
@@ -258,7 +415,9 @@ function MyFavorites() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
         <h1 style={{ fontSize: 20, fontWeight: 700, color: '#111827', margin: 0 }}>My Favorites</h1>
-        <button style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '6px 12px', border: '1px solid #d1d5db', borderRadius: 6, backgroundColor: 'white', cursor: 'pointer', fontSize: 12, color: '#374151' }}>
+        <button style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '6px 12px',
+          border: '1px solid #d1d5db', borderRadius: 6, backgroundColor: 'white',
+          cursor: 'pointer', fontSize: 12, color: '#374151' }}>
           <Icon d={P.cog} size={13} color="#6b7280" sw={2} /> Customize page
         </button>
       </div>
@@ -271,56 +430,245 @@ function MyFavorites() {
             </div>
           ))}
         </div>
-        <p style={{ fontSize: 12, color: '#9ca3af', margin: 0 }}>Have your favorite apps at hand by customizing this section.</p>
+        <p style={{ fontSize: 12, color: '#9ca3af', margin: 0 }}>
+          Have your favorite apps at hand by customizing this section.
+        </p>
       </div>
     </div>
   );
 }
 
-function DirApptAgentView() {
+function DirApptAgentView({ featureSection, extraSuggestions = [], headline, description, showSuggestions = true }: {
+  featureSection?: ReactNode;
+  extraSuggestions?: { id: string; label: string; icon?: ReactNode }[];
+  headline?: string;
+  description?: string;
+  showSuggestions?: boolean;
+}) {
   const [prompt, setPrompt] = useState('');
   const [focused, setFocused] = useState(false);
-  const [suggestionsOpen, setSuggestionsOpen] = useState(false);
-  const suggestions = [
-    { id: 's1', label: 'Review board nominees' }, { id: 's2', label: 'Check board composition' },
-    { id: 's3', label: 'Start appointment workflow' }, { id: 's4', label: 'Governance requirements' },
+
+  const toolSuggestions = [
+    {
+      id: 't1', label: 'Appoint a Board member',
+      icon: <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>,
+    },
+    ...extraSuggestions,
   ];
+
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '48px 28px' }}>
-      <div style={{ width: '100%', maxWidth: 620 }}>
-        <h2 style={{ fontSize: 40, fontWeight: 300, color: '#282e37', textAlign: 'center', margin: '0 0 10px', lineHeight: '46px', letterSpacing: '-0.8px' }}>Your appointment agent is standing by</h2>
-        <p style={{ fontSize: 15, color: '#6f7377', textAlign: 'center', margin: '0 0 32px', lineHeight: 1.65, maxWidth: 480, marginLeft: 'auto', marginRight: 'auto' }}>
-          I can help you appoint a new director — reviewing nominees, checking board composition, managing governance compliance, and preparing appointment documentation.
+    <div style={{
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: featureSection ? 'flex-start' : 'center',
+      padding: '48px 28px',
+      position: 'relative',
+      overflowY: featureSection ? 'auto' : 'hidden',
+    }}>
+      {/* AIGlow — blurry gradient strip behind the chat box */}
+      <div
+        aria-hidden="true"
+        role="presentation"
+        style={{
+          position: 'absolute',
+          width: '800px',
+          height: '90px',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, 20px)',
+          background: 'linear-gradient(90deg, rgba(190,12,30,0.55) 0%, rgba(171,72,218,0.5) 40%, rgba(64,105,254,0.55) 100%)',
+          filter: 'blur(48px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+          borderRadius: '50%',
+        }}
+      />
+      <div style={{ width: '100%', maxWidth: 660, position: 'relative', zIndex: 1 }}>
+        <h2 style={{
+          fontSize: 40, fontWeight: 300, color: '#282e37',
+          textAlign: 'center', margin: '0 0 10px', lineHeight: '46px',
+          letterSpacing: '-0.8px',
+        }}>
+          {headline ?? 'Your appointment agent is standing by'}
+        </h2>
+
+        <p style={{
+          fontSize: 15, color: '#6f7377', textAlign: 'center',
+          margin: '0 0 32px', lineHeight: 1.65, maxWidth: 480,
+          marginLeft: 'auto', marginRight: 'auto',
+        }}>
+          {description ?? 'I can help you appoint a new director — reviewing nominees, checking board composition, managing governance compliance, and preparing appointment documentation.'}
         </p>
-        {suggestionsOpen && (
-          <div style={{ backgroundColor: '#ffffff', border: '1.5px solid #dadada', borderRadius: 10, padding: '10px 12px', marginBottom: 4, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            {suggestions.map(s => (
-              <button key={s.id} onClick={() => { setPrompt(s.label); setSuggestionsOpen(false); }}
-                style={{ backgroundColor: '#f5f5f5', color: '#282e37', border: '1px solid #e2e2e2', borderRadius: 20, padding: '5px 14px', fontSize: 13, fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
-                {s.label}
+
+        {/* Atlas AI chat box */}
+        <div style={{
+          border: `1px solid ${focused ? '#b8b8b8' : '#e0e0e0'}`,
+          borderRadius: 22,
+          backgroundColor: '#ffffff',
+          boxShadow: focused
+            ? '0 0 0 3px rgba(11,76,206,0.10), 0 2px 16px rgba(0,0,0,0.08)'
+            : '0 2px 16px rgba(0,0,0,0.08)',
+          transition: 'border-color 0.15s, box-shadow 0.15s',
+          overflow: 'hidden',
+        }}>
+          {/* Text field */}
+          <textarea
+            value={prompt}
+            onChange={e => setPrompt(e.target.value)}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            placeholder="Enter your message"
+            rows={2}
+            style={{
+              width: '100%', padding: '18px 20px 6px', border: 'none',
+              outline: 'none', resize: 'none', fontSize: 15,
+              color: '#282e37', fontFamily: 'inherit',
+              backgroundColor: 'transparent', lineHeight: 1.5,
+              boxSizing: 'border-box',
+            }}
+          />
+
+          {/* Toolbar */}
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '6px 12px 12px',
+          }}>
+            {/* Leading: attachment + Tools */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <button
+                style={{
+                  width: 34, height: 34, borderRadius: '50%',
+                  border: '1.5px solid #d8d8d8', backgroundColor: 'transparent',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', color: '#464e53',
+                  transition: 'background-color 0.12s',
+                  flexShrink: 0,
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#f5f5f5'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent'; }}
+                aria-label="Attach file"
+              >
+                <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>
+                </svg>
               </button>
-            ))}
-          </div>
-        )}
-        <div style={{ border: `1.5px solid ${focused ? '#464e53' : '#dadada'}`, borderRadius: 12, backgroundColor: '#ffffff', boxShadow: focused ? '0 0 0 3px rgba(11,76,206,0.12)' : '0 1px 3px rgba(0,0,0,0.06)', transition: 'border-color 0.15s, box-shadow 0.15s', overflow: 'hidden' }}>
-          <textarea value={prompt} onChange={e => setPrompt(e.target.value)} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
-            placeholder="Ask me to appoint a director, review candidates, or check governance requirements…" rows={3}
-            style={{ width: '100%', padding: '14px 16px 10px', border: 'none', outline: 'none', resize: 'none', fontSize: 14, color: '#282e37', fontFamily: 'inherit', backgroundColor: 'transparent', lineHeight: 1.55, boxSizing: 'border-box' }} />
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 8px 8px', gap: 4, borderTop: '1px solid #f0f0f0' }}>
-            <button onClick={() => setSuggestionsOpen(v => !v)} style={{ display: 'flex', alignItems: 'center', gap: 5, height: 32, padding: '0 10px', backgroundColor: suggestionsOpen ? '#eef1ff' : 'transparent', border: `1px solid ${suggestionsOpen ? '#b8c3f8' : 'transparent'}`, borderRadius: 6, fontSize: 12, fontWeight: 500, color: suggestionsOpen ? '#1c4ee4' : '#6f7377', cursor: 'pointer', fontFamily: 'inherit' }}>
-              <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 1 7 7c0 2.5-1.3 4.7-3.3 6H8.3C6.3 13.7 5 11.5 5 9a7 7 0 0 1 7-7z"/></svg>
-              Suggestions
-            </button>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <button aria-label="Voice input" style={{ width: 32, height: 32, borderRadius: 6, border: '1px solid transparent', backgroundColor: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#6f7377' }}>
-                <svg width={15} height={15} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+
+              <button
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 5,
+                  height: 34, padding: '0 14px',
+                  backgroundColor: 'transparent',
+                  border: '1.5px solid #d8d8d8',
+                  borderRadius: 17,
+                  fontSize: 13, fontWeight: 500,
+                  color: '#464e53',
+                  cursor: 'pointer', fontFamily: 'inherit',
+                  transition: 'background-color 0.12s',
+                  whiteSpace: 'nowrap',
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#f5f5f5'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent'; }}
+              >
+                <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/>
+                </svg>
+                Tools
+                <svg width={11} height={11} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
               </button>
-              <button style={{ width: 32, height: 32, background: prompt ? 'linear-gradient(135deg, #b11f62 0%, #1c4ee4 100%)' : '#e6e6e6', color: prompt ? 'white' : '#a0a2a5', border: 'none', borderRadius: 7, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: prompt ? 'pointer' : 'default', flexShrink: 0 }}>
-                <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </div>
+
+            {/* Trailing: voice + send */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <button
+                style={{
+                  width: 34, height: 34, borderRadius: '50%',
+                  border: '1.5px solid #d8d8d8', backgroundColor: 'transparent',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', color: '#464e53',
+                  transition: 'background-color 0.12s',
+                  flexShrink: 0,
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#f5f5f5'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent'; }}
+                aria-label="Voice input"
+              >
+                <svg width={15} height={15} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                  <line x1="12" y1="19" x2="12" y2="23"/>
+                  <line x1="8" y1="23" x2="16" y2="23"/>
+                </svg>
+              </button>
+
+              <button
+                style={{
+                  width: 34, height: 34, borderRadius: '50%',
+                  border: `1.5px solid ${prompt ? 'transparent' : '#d8d8d8'}`,
+                  background: prompt ? 'linear-gradient(135deg, #b11f62 0%, #1c4ee4 100%)' : 'transparent',
+                  color: prompt ? 'white' : '#a0a2a5',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: prompt ? 'pointer' : 'default',
+                  transition: 'background 0.2s, color 0.2s, border-color 0.2s',
+                  flexShrink: 0,
+                }}
+              >
+                <svg width={15} height={15} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 19V5M5 12l7-7 7 7"/>
+                </svg>
               </button>
             </div>
           </div>
         </div>
+
+        {showSuggestions && (
+          <>
+            {/* AIChatBoxToolSuggestions — always visible below */}
+            <div style={{ marginTop: 16, display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
+              {toolSuggestions.map(s => (
+                <button
+                  key={s.id}
+                  onClick={() => setPrompt(s.label)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 6,
+                    backgroundColor: 'transparent', color: '#464e53',
+                    border: '1px solid #d8d8d8', borderRadius: 20,
+                    padding: '6px 14px', fontSize: 13, fontWeight: 500,
+                    cursor: 'pointer', fontFamily: 'inherit',
+                    transition: 'background-color 0.12s, border-color 0.12s',
+                    whiteSpace: 'nowrap',
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.9)';
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = '#aaaaaa';
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = '#d8d8d8';
+                  }}
+                >
+                  {s.icon}
+                  {s.label}
+                </button>
+              ))}
+            </div>
+
+            {/* AI disclaimer */}
+            <p style={{ marginTop: 14, fontSize: 12, color: '#9ca3af', textAlign: 'center' }}>
+              AI-generated content may have inaccuracies.{' '}
+              <a href="#" style={{ color: '#6b7280', textDecoration: 'underline' }}>Learn more</a>
+            </p>
+          </>
+        )}
+
+        {featureSection && (
+          <div style={{ marginTop: 40 }}>
+            {featureSection}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -328,18 +676,29 @@ function DirApptAgentView() {
 
 function DirApptBanner({ isNew }: { isNew: boolean }) {
   return (
-    <div style={{ backgroundColor: 'white', border: `1px solid ${isNew ? RED : '#e5e7eb'}`, borderLeft: `4px solid ${RED}`, borderRadius: 8, padding: '14px 18px', marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+    <div style={{ backgroundColor: 'white', border: `1px solid ${isNew ? RED : '#e5e7eb'}`,
+      borderLeft: `4px solid ${RED}`, borderRadius: 8, padding: '14px 18px', marginTop: 20,
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        <div style={{ width: 36, height: 36, backgroundColor: `${RED}18`, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Icon d={P.userAdd} size={18} color={RED} sw={2} /></div>
+        <div style={{ width: 36, height: 36, backgroundColor: `${RED}18`, borderRadius: 8,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <Icon d={P.userAdd} size={18} color={RED} sw={2} />
+        </div>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
             <span style={{ fontSize: 14, fontWeight: 700, color: '#111827' }}>Director Appointment Pending</span>
             {isNew && <NewBadge />}
           </div>
-          <p style={{ fontSize: 12, color: '#6b7280', margin: 0 }}>Board seat pending approval — Pied Piper Board of Directors</p>
+          <p style={{ fontSize: 12, color: '#6b7280', margin: 0 }}>
+            Board seat pending approval — Pied Piper Board of Directors
+          </p>
         </div>
       </div>
-      <button style={{ backgroundColor: RED, color: 'white', border: 'none', borderRadius: 6, padding: '7px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>Review &amp; Appoint</button>
+      <button style={{ backgroundColor: RED, color: 'white', border: 'none', borderRadius: 6,
+        padding: '7px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer',
+        whiteSpace: 'nowrap', flexShrink: 0 }}>
+        Review &amp; Appoint
+      </button>
     </div>
   );
 }
@@ -348,21 +707,38 @@ function ConnectedComplianceSection({ isNew }: { isNew: boolean }) {
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, marginTop: 32 }}>
-        <h2 style={{ fontSize: 19, fontWeight: 700, color: '#111827', margin: 0 }}>Connected <span style={{ color: RED, fontWeight: 600 }}>Compliance</span></h2>
+        <h2 style={{ fontSize: 19, fontWeight: 700, color: '#111827', margin: 0 }}>
+          Connected <span style={{ color: RED, fontWeight: 600 }}>Compliance</span>
+        </h2>
         {isNew && <NewBadge />}
       </div>
-      <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', borderRadius: 12, padding: '22px 24px', display: 'flex', alignItems: 'center', gap: 18, cursor: 'pointer' }}>
-        <div style={{ width: 46, height: 46, backgroundColor: `${RED}28`, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Icon d={P.chat} size={22} color={RED} sw={2} /></div>
+      <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+        borderRadius: 12, padding: '22px 24px', display: 'flex', alignItems: 'center',
+        gap: 18, cursor: 'pointer' }}>
+        <div style={{ width: 46, height: 46, backgroundColor: `${RED}28`, borderRadius: 10,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <Icon d={P.chat} size={22} color={RED} sw={2} />
+        </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 15, fontWeight: 700, color: 'white', marginBottom: 4 }}>AI Compliance Assistant</div>
-          <p style={{ fontSize: 12, color: '#94a3b8', margin: '0 0 12px' }}>AI-powered compliance workflows across your organisation. Ask anything, take action.</p>
+          <div style={{ fontSize: 15, fontWeight: 700, color: 'white', marginBottom: 4 }}>
+            AI Compliance Assistant
+          </div>
+          <p style={{ fontSize: 12, color: '#94a3b8', margin: '0 0 12px' }}>
+            AI-powered compliance workflows across your organisation. Ask anything, take action.
+          </p>
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
             {['Appoint a Board Member', 'Review board composition', 'Check compliance status'].map(s => (
-              <span key={s} style={{ backgroundColor: 'rgba(255,255,255,0.08)', color: '#cbd5e1', fontSize: 11, padding: '4px 10px', borderRadius: 20, cursor: 'pointer', whiteSpace: 'nowrap' }}>{s}</span>
+              <span key={s} style={{ backgroundColor: 'rgba(255,255,255,0.08)', color: '#cbd5e1',
+                fontSize: 11, padding: '4px 10px', borderRadius: 20, cursor: 'pointer',
+                whiteSpace: 'nowrap' }}>{s}</span>
             ))}
           </div>
         </div>
-        <button style={{ backgroundColor: RED, color: 'white', border: 'none', borderRadius: 8, padding: '10px 18px', fontSize: 13, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>Open Assistant →</button>
+        <button style={{ backgroundColor: RED, color: 'white', border: 'none', borderRadius: 8,
+          padding: '10px 18px', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+          whiteSpace: 'nowrap', flexShrink: 0 }}>
+          Open Assistant →
+        </button>
       </div>
     </>
   );
@@ -373,53 +749,197 @@ function AARSection({ isNew }: { isNew: boolean }) {
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, marginTop: 32 }}>
-        <h2 style={{ fontSize: 19, fontWeight: 700, color: '#111827', margin: 0 }}>Automated Audit <span style={{ color: RED, fontWeight: 600 }}>Reports</span></h2>
+        <h2 style={{ fontSize: 19, fontWeight: 700, color: '#111827', margin: 0 }}>
+          Automated Audit <span style={{ color: RED, fontWeight: 600 }}>Reports</span>
+        </h2>
         {isNew && <NewBadge />}
       </div>
       <div style={{ backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: 10, padding: '20px 22px' }}>
-        <p style={{ fontSize: 12, color: '#6b7280', margin: '0 0 18px' }}>AI-powered end-to-end audit reporting — investigation to approved report.</p>
+        <p style={{ fontSize: 12, color: '#6b7280', margin: '0 0 18px' }}>
+          AI-powered end-to-end audit reporting — investigation to approved report.
+        </p>
         <div style={{ display: 'flex', alignItems: 'flex-start' }}>
           {steps.map((step, i) => (
             <div key={step} style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                <div style={{ width: 34, height: 34, borderRadius: '50%', border: `2px solid ${RED}`, backgroundColor: `${RED}12`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: RED, flexShrink: 0 }}>{String(i + 1).padStart(2, '0')}</div>
-                <span style={{ fontSize: 10, fontWeight: 600, color: '#4b5563', textAlign: 'center', maxWidth: 70, lineHeight: 1.3 }}>{step}</span>
+                <div style={{ width: 34, height: 34, borderRadius: '50%', border: `2px solid ${RED}`,
+                  backgroundColor: `${RED}12`, display: 'flex', alignItems: 'center',
+                  justifyContent: 'center', fontSize: 12, fontWeight: 700, color: RED, flexShrink: 0 }}>
+                  {String(i + 1).padStart(2, '0')}
+                </div>
+                <span style={{ fontSize: 10, fontWeight: 600, color: '#4b5563', textAlign: 'center',
+                  maxWidth: 70, lineHeight: 1.3 }}>{step}</span>
               </div>
-              {i < steps.length - 1 && <div style={{ flex: 1, height: 2, backgroundColor: '#e5e7eb', marginBottom: 20, marginLeft: 2, marginRight: 2, flexShrink: 0 }} />}
+              {i < steps.length - 1 && (
+                <div style={{ flex: 1, height: 2, backgroundColor: '#e5e7eb',
+                  marginBottom: 20, marginLeft: 2, marginRight: 2, flexShrink: 0 }} />
+              )}
             </div>
           ))}
         </div>
         <div style={{ marginTop: 18, display: 'flex', gap: 8 }}>
-          <button style={{ backgroundColor: RED, color: 'white', border: 'none', borderRadius: 6, padding: '7px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Start New Report</button>
-          <button style={{ backgroundColor: 'white', color: '#374151', border: '1px solid #d1d5db', borderRadius: 6, padding: '7px 14px', fontSize: 12, cursor: 'pointer' }}>View All Reports</button>
+          <button style={{ backgroundColor: RED, color: 'white', border: 'none', borderRadius: 6,
+            padding: '7px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+            Start New Report
+          </button>
+          <button style={{ backgroundColor: 'white', color: '#374151', border: '1px solid #d1d5db',
+            borderRadius: 6, padding: '7px 14px', fontSize: 12, cursor: 'pointer' }}>
+            View All Reports
+          </button>
         </div>
       </div>
     </>
   );
 }
 
+// ─── Q3+ COMPONENTS ───────────────────────────────────────────────────────────
+function MonitoringAgentsWidget() {
+  const agents = [
+    {
+      id: 'vendor',
+      label: 'Vendor Intelligence',
+      status: 'CloudSecure incident',
+      time: 'Last 32 min ago',
+      dot: '#CC2027',
+    },
+    {
+      id: 'board',
+      label: 'Board Materials Monitor',
+      status: "Gap: materials don't reflect risks",
+      time: 'Last 1 hr ago',
+      dot: '#D97706',
+    },
+  ];
+
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: 0,
+      border: '1px solid #e5e7eb', borderRadius: 10,
+      backgroundColor: 'white', overflow: 'hidden',
+    }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 6,
+        padding: '10px 16px', borderRight: '1px solid #e5e7eb', flexShrink: 0,
+      }}>
+        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', color: '#6b7280', whiteSpace: 'nowrap' }}>
+          MONITORING AGENTS
+        </span>
+        <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', flex: 1, flexWrap: 'wrap' }}>
+        {agents.map((agent, i) => (
+          <div key={agent.id} style={{
+            display: 'flex', alignItems: 'center', gap: 8,
+            padding: '10px 20px',
+            borderRight: i < agents.length - 1 ? '1px solid #e5e7eb' : 'none',
+            cursor: 'pointer',
+          }}>
+            <div style={{
+              width: 8, height: 8, borderRadius: '50%',
+              backgroundColor: agent.dot, flexShrink: 0,
+              boxShadow: `0 0 0 2px ${agent.dot}30`,
+            }} />
+            <span style={{ fontSize: 13, fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>
+              {agent.label}
+            </span>
+            <span style={{ fontSize: 13, color: '#6b7280', whiteSpace: 'nowrap' }}>{agent.status}</span>
+            <span style={{ fontSize: 12, color: '#9ca3af', whiteSpace: 'nowrap' }}>{agent.time}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PickUpWhereYouLeftOff() {
+  const items = [
+    { app: 'Boards',         date: 'Jan 16', summary: 'Finalized Q1 board meeting agenda and uploaded supporting materials.' },
+    { app: 'Entities',       date: 'Jan 15', summary: 'Verified annual report filings for 3 subsidiaries; all jurisdictions current.' },
+    { app: 'Policy Manager', date: 'Jan 14', summary: 'Reviewed attestation status for updated Code of Conduct: 94% completion.' },
+    { app: 'AI Reporting',   date: 'Jan 12', summary: 'Generated executive summary of legal department KPIs for leadership review.' },
+  ];
+
+  return (
+    <div style={{ marginTop: 36 }}>
+      <div style={{ marginBottom: 10 }}>
+        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', color: '#6b7280', margin: '0 0 3px', textTransform: 'uppercase' }}>
+          Pick up where you left off
+        </p>
+        <p style={{ fontSize: 13, color: '#9ca3af', margin: 0 }}>
+          Recent activity across your Diligent tools.
+        </p>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        {items.map(item => (
+          <div key={item.app} style={{
+            backgroundColor: 'white', border: '1px solid #e5e7eb',
+            borderRadius: 10, padding: '14px 16px', cursor: 'pointer',
+            transition: 'border-color 0.15s',
+          }}
+            onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = '#d1d5db'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = '#e5e7eb'; }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5 }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: '#111827' }}>{item.app}</span>
+              <span style={{ fontSize: 12, color: '#9ca3af', flexShrink: 0, marginLeft: 8 }}>{item.date}</span>
+            </div>
+            <p style={{ fontSize: 13, color: '#6b7280', margin: 0, lineHeight: 1.5 }}>{item.summary}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function TimelineBar({ activeIdx, onSelect }: { activeIdx: number; onSelect: (i: number) => void }) {
   return (
-    <div style={{ backgroundColor: '#0f172a', padding: '10px 24px', display: 'flex', alignItems: 'center', flexShrink: 0, borderBottom: '1px solid #1e293b', gap: 0 }}>
-      <span style={{ color: '#64748b', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginRight: 24, whiteSpace: 'nowrap', flexShrink: 0 }}>D1P · 2026 Roadmap</span>
+    <div style={{ backgroundColor: '#0f172a', padding: '10px 24px', display: 'flex',
+      alignItems: 'center', flexShrink: 0, borderBottom: '1px solid #1e293b', gap: 0 }}>
+      <span style={{ color: '#64748b', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
+        textTransform: 'uppercase', marginRight: 24, whiteSpace: 'nowrap', flexShrink: 0 }}>
+        D1P · 2026 Roadmap
+      </span>
       <div style={{ display: 'flex', alignItems: 'center', flex: 1, minWidth: 0 }}>
         {MILESTONES.map((m, i) => (
           <div key={m.id} style={{ display: 'flex', alignItems: 'center', flex: 1, minWidth: 0 }}>
-            <button onClick={() => onSelect(i)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, padding: '7px 14px', borderRadius: 8, border: activeIdx === i ? `1.5px solid ${RED}` : '1.5px solid transparent', backgroundColor: activeIdx === i ? `${RED}1a` : 'transparent', cursor: 'pointer', transition: 'all 0.2s', flexShrink: 0 }}>
-              <span style={{ color: activeIdx === i ? 'white' : '#94a3b8', fontSize: 12, fontWeight: 700 }}>{m.label}</span>
-              <span style={{ color: activeIdx === i ? '#fca5a5' : '#64748b', fontSize: 11, fontWeight: 500 }}>{m.feature}</span>
-              {m.tag && <span style={{ backgroundColor: activeIdx === i ? RED : '#334155', color: 'white', fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 4 }}>{m.tag}</span>}
+            <button onClick={() => onSelect(i)} style={{ display: 'flex', flexDirection: 'column',
+              alignItems: 'center', gap: 2, padding: '7px 14px', borderRadius: 8,
+              border: activeIdx === i ? `1.5px solid ${RED}` : '1.5px solid transparent',
+              backgroundColor: activeIdx === i ? `${RED}1a` : 'transparent',
+              cursor: 'pointer', transition: 'all 0.2s', flexShrink: 0 }}>
+              <span style={{ color: activeIdx === i ? 'white' : '#94a3b8', fontSize: 12, fontWeight: 700 }}>
+                {m.label}
+              </span>
+              <span style={{ color: activeIdx === i ? '#fca5a5' : '#64748b', fontSize: 11, fontWeight: 500 }}>
+                {m.feature}
+              </span>
+              {m.tag && (
+                <span style={{ backgroundColor: activeIdx === i ? RED : '#334155',
+                  color: 'white', fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 4 }}>
+                  {m.tag}
+                </span>
+              )}
             </button>
-            {i < MILESTONES.length - 1 && <div style={{ flex: 1, height: 2, minWidth: 8, backgroundColor: i < activeIdx ? RED : '#1e293b', transition: 'background-color 0.3s' }} />}
+            {i < MILESTONES.length - 1 && (
+              <div style={{ flex: 1, height: 2, minWidth: 8,
+                backgroundColor: i < activeIdx ? RED : '#1e293b',
+                transition: 'background-color 0.3s' }} />
+            )}
           </div>
         ))}
       </div>
       <div style={{ display: 'flex', gap: 6, marginLeft: 20, flexShrink: 0 }}>
         {([
-          { icon: P.left, disabled: activeIdx === 0, fn: () => onSelect(activeIdx - 1) },
+          { icon: P.left,  disabled: activeIdx === 0,                     fn: () => onSelect(activeIdx - 1) },
           { icon: P.right, disabled: activeIdx === MILESTONES.length - 1, fn: () => onSelect(activeIdx + 1) },
         ] as const).map((btn, i) => (
-          <button key={i} onClick={btn.fn} disabled={btn.disabled} style={{ width: 30, height: 30, borderRadius: 6, border: '1px solid #334155', backgroundColor: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: btn.disabled ? 'not-allowed' : 'pointer', opacity: btn.disabled ? 0.35 : 1 }}>
+          <button key={i} onClick={btn.fn} disabled={btn.disabled}
+            style={{ width: 30, height: 30, borderRadius: 6, border: '1px solid #334155',
+              backgroundColor: 'transparent', display: 'flex', alignItems: 'center',
+              justifyContent: 'center', cursor: btn.disabled ? 'not-allowed' : 'pointer',
+              opacity: btn.disabled ? 0.35 : 1 }}>
             <Icon d={btn.icon} size={14} color="#94a3b8" sw={2.5} />
           </button>
         ))}
@@ -428,20 +948,98 @@ function TimelineBar({ activeIdx, onSelect }: { activeIdx: number; onSelect: (i:
   );
 }
 
+// ─── ROOT ─────────────────────────────────────────────────────────────────────
 export default function HomePage() {
   const [activeIdx, setActiveIdx] = useState(0);
   const data = getPageData(MILESTONES[activeIdx].id);
+
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', fontFamily: 'system-ui, -apple-system, sans-serif', overflow: 'hidden' }}>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column',
+      fontFamily: 'system-ui, -apple-system, sans-serif', overflow: 'hidden' }}>
       <TimelineBar activeIdx={activeIdx} onSelect={setActiveIdx} />
       {activeIdx === 1 ? (
+        // April 2026 — app header + AI agent view
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           <DirApptHeader />
-          <div style={{ flex: 1, overflowY: 'auto', backgroundColor: '#f3f3f3', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <DirApptAgentView />
           </div>
         </div>
+      ) : activeIdx === 2 ? (
+        // Early Q2 — same as April 2026 + Connected Compliance feature
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          <DirApptHeader />
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+            <DirApptAgentView
+              headline="Your compliance agent is standing by"
+              description="I can help you navigate compliance workflows — tracking obligations, reviewing board composition, surfacing risks, and keeping your organisation audit-ready."
+              extraSuggestions={[{
+                id: 'compliance-progress',
+                label: 'Explore Compliance Progress',
+                icon: <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>,
+              }]}
+            />
+          </div>
+        </div>
+      ) : activeIdx === 3 ? (
+        // Late Q2 — same as April 2026 + AAR Workflow feature
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          <DirApptHeader />
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+            <DirApptAgentView
+              headline="Your audit agent is standing by"
+              description="I can help you run end-to-end audit reports — from investigation and evidence gathering to synthesis, veracity scoring, and final approval."
+              extraSuggestions={[
+                {
+                  id: 'compliance-progress',
+                  label: 'Explore Compliance Progress',
+                  icon: <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>,
+                },
+                {
+                  id: 'run-audit-report',
+                  label: 'Run Audit Report',
+                  icon: <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
+                },
+              ]}
+            />
+          </div>
+        </div>
+      ) : activeIdx === 4 ? (
+        // Q3+ — same structure as Late Q2 + agent monitoring + pick up where you left off
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          <DirApptHeader />
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+            <DirApptAgentView
+              headline="Your agent hub is ready"
+              description="Your AI agents are actively monitoring risk, compliance, and governance across your organisation — ask anything or pick up where you left off."
+              featureSection={
+                <>
+                  <MonitoringAgentsWidget />
+                  <PickUpWhereYouLeftOff />
+                </>
+              }
+              extraSuggestions={[
+                {
+                  id: 'compliance-progress',
+                  label: 'Explore Compliance Progress',
+                  icon: <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>,
+                },
+                {
+                  id: 'run-audit-report',
+                  label: 'Run Audit Report',
+                  icon: <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
+                },
+                {
+                  id: 'view-agent-activity',
+                  label: 'View Agent Activity',
+                  icon: <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+                },
+              ]}
+            />
+          </div>
+        </div>
       ) : (
+        // Today — sidebar + top bar
         <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
           <Sidebar />
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
@@ -449,9 +1047,6 @@ export default function HomePage() {
             <div style={{ flex: 1, overflowY: 'auto', backgroundColor: '#f9fafb', padding: '24px 28px' }}>
               <div style={{ maxWidth: 920 }}>
                 <MyFavorites />
-                {activeIdx >= 2 && <DirApptBanner isNew={false} />}
-                {activeIdx >= 2 && <ConnectedComplianceSection isNew={activeIdx === 2} />}
-                {activeIdx >= 3 && <AARSection isNew={activeIdx === 3} />}
                 <SectionHead a="Boards" b="Governance" />
                 <TilesRow tiles={data.boardsGov} />
                 <SectionHead a="Risk" b="Strategy" />
