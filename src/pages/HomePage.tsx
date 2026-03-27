@@ -467,24 +467,6 @@ function DirApptAgentView({ featureSection, extraSuggestions = [], headline, des
       position: 'relative',
       overflowY: featureSection ? 'auto' : 'hidden',
     }}>
-      {/* AIGlow — blurry gradient strip behind the chat box */}
-      <div
-        aria-hidden="true"
-        role="presentation"
-        style={{
-          position: 'absolute',
-          width: '800px',
-          height: '90px',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, 20px)',
-          background: 'linear-gradient(90deg, rgba(190,12,30,0.55) 0%, rgba(171,72,218,0.5) 40%, rgba(64,105,254,0.55) 100%)',
-          filter: 'blur(48px)',
-          pointerEvents: 'none',
-          zIndex: 0,
-          borderRadius: '50%',
-        }}
-      />
       <div style={{ width: '100%', maxWidth: 660, position: 'relative', zIndex: 1 }}>
         <h2 style={{
           fontSize: 40, fontWeight: 300, color: '#282e37',
@@ -503,8 +485,26 @@ function DirApptAgentView({ featureSection, extraSuggestions = [], headline, des
         </p>
 
         {/* Atlas AI chat box */}
-        <div style={{
-          border: `1px solid ${focused ? '#b8b8b8' : '#e0e0e0'}`,
+        <div style={{ position: 'relative' }}>
+          {/* AIGlow — blurry gradient strip anchored behind the chat box */}
+          <div
+            aria-hidden="true"
+            role="presentation"
+            style={{
+              position: 'absolute',
+              width: '800px',
+              height: '90px',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -20%)',
+              background: 'linear-gradient(90deg, rgba(190,12,30,0.55) 0%, rgba(171,72,218,0.5) 40%, rgba(64,105,254,0.55) 100%)',
+              filter: 'blur(48px)',
+              pointerEvents: 'none',
+              zIndex: 0,
+              borderRadius: '50%',
+            }}
+          />
+        <div style={{ position: 'relative', zIndex: 1, border: `1px solid ${focused ? '#b8b8b8' : '#e0e0e0'}`,
           borderRadius: 22,
           backgroundColor: '#ffffff',
           boxShadow: focused
@@ -623,6 +623,7 @@ function DirApptAgentView({ featureSection, extraSuggestions = [], headline, des
             </div>
           </div>
         </div>
+        </div>{/* end chat box anchor wrapper */}
 
         {showSuggestions && (
           <>
@@ -675,6 +676,116 @@ function DirApptAgentView({ featureSection, extraSuggestions = [], headline, des
 }
 
 // ─── Q3+ COMPONENTS ───────────────────────────────────────────────────────────
+function BotInstallCTAs() {
+  return (
+    <div style={{ marginTop: 36 }}>
+      <div style={{ marginBottom: 10 }}>
+        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', color: '#6b7280', margin: '0 0 3px', textTransform: 'uppercase' }}>
+          Bring DilAgent to your team
+        </p>
+        <p style={{ fontSize: 13, color: '#9ca3af', margin: 0 }}>
+          Get agent alerts and run tasks directly from where your team works.
+        </p>
+      </div>
+      <div style={{ display: 'flex', gap: 12 }}>
+
+        {/* Teams CTA */}
+        <div style={{
+          flex: 1, display: 'flex', alignItems: 'center', gap: 14,
+          backgroundColor: 'white', border: '1px solid #e5e7eb',
+          borderRadius: 10, padding: '14px 18px', cursor: 'pointer',
+          transition: 'border-color 0.15s, box-shadow 0.15s',
+        }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLDivElement).style.borderColor = '#c4b5fd';
+            (e.currentTarget as HTMLDivElement).style.boxShadow = '0 2px 8px rgba(124,58,237,0.08)';
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLDivElement).style.borderColor = '#e5e7eb';
+            (e.currentTarget as HTMLDivElement).style.boxShadow = 'none';
+          }}
+        >
+          {/* Teams logo */}
+          <div style={{
+            width: 36, height: 36, borderRadius: 8, flexShrink: 0,
+            backgroundColor: '#5059C9',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+              <path d="M15.5 9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" fill="white" fillOpacity="0.9"/>
+              <path d="M13 10.5h6a1 1 0 0 1 1 1V16a3 3 0 0 1-3 3h-1a3 3 0 0 1-3-3v-4.5a1 1 0 0 1 1-1z" fill="white" fillOpacity="0.7"/>
+              <path d="M9 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="white"/>
+              <path d="M14 12H4a1 1 0 0 0-1 1v5a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4v-5a1 1 0 0 0-1-1z" fill="white" fillOpacity="0.85"/>
+            </svg>
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#111827', margin: '0 0 2px' }}>
+              Install for Microsoft Teams
+            </p>
+            <p style={{ fontSize: 12, color: '#6b7280', margin: 0 }}>
+              Receive alerts and run agent tasks in Teams
+            </p>
+          </div>
+          <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </div>
+
+        {/* Slack CTA */}
+        <div style={{
+          flex: 1, display: 'flex', alignItems: 'center', gap: 14,
+          backgroundColor: 'white', border: '1px solid #e5e7eb',
+          borderRadius: 10, padding: '14px 18px', cursor: 'pointer',
+          transition: 'border-color 0.15s, box-shadow 0.15s',
+        }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLDivElement).style.borderColor = '#fbbf24';
+            (e.currentTarget as HTMLDivElement).style.boxShadow = '0 2px 8px rgba(251,191,36,0.10)';
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLDivElement).style.borderColor = '#e5e7eb';
+            (e.currentTarget as HTMLDivElement).style.boxShadow = 'none';
+          }}
+        >
+          {/* Slack logo */}
+          <div style={{
+            width: 36, height: 36, borderRadius: 8, flexShrink: 0,
+            backgroundColor: '#4A154B',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+              <rect x="5" y="2" width="3.5" height="9" rx="1.75" fill="#E01E5A"/>
+              <rect x="5" y="13" width="3.5" height="3.5" rx="1.75" fill="#E01E5A" fillOpacity="0.6"/>
+              <rect x="2" y="9.75" width="9" height="3.5" rx="1.75" fill="#E01E5A" fillOpacity="0.7"/>
+              <rect x="13" y="9.75" width="3.5" height="3.5" rx="1.75" fill="#E01E5A" fillOpacity="0.5"/>
+              <rect x="15.5" y="13" width="3.5" height="9" rx="1.75" fill="#36C5F0" transform="rotate(180 17.25 17.5)"/>
+              <rect x="15.5" y="9.75" width="3.5" height="3.5" rx="1.75" fill="#36C5F0" fillOpacity="0.6" transform="rotate(180 17.25 11.5)"/>
+              <rect x="13" y="15.25" width="9" height="3.5" rx="1.75" fill="#36C5F0" fillOpacity="0.7" transform="rotate(180 17.5 17)"/>
+              <rect x="9.75" y="2" width="3.5" height="3.5" rx="1.75" fill="#2EB67D" fillOpacity="0.6"/>
+              <rect x="9.75" y="5.5" width="3.5" height="9" rx="1.75" fill="#2EB67D"/>
+              <rect x="9.75" y="9.75" width="3.5" height="3.5" rx="1.75" fill="#2EB67D" fillOpacity="0.5"/>
+              <rect x="2" y="5.5" width="3.5" height="3.5" rx="1.75" fill="#ECB22E" fillOpacity="0.6"/>
+              <rect x="5.5" y="5.5" width="9" height="3.5" rx="1.75" fill="#ECB22E"/>
+              <rect x="9.75" y="5.5" width="3.5" height="3.5" rx="1.75" fill="#ECB22E" fillOpacity="0.5"/>
+            </svg>
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#111827', margin: '0 0 2px' }}>
+              Install for Slack
+            </p>
+            <p style={{ fontSize: 12, color: '#6b7280', margin: 0 }}>
+              Receive alerts and run agent tasks in Slack
+            </p>
+          </div>
+          <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </div>
+
+      </div>
+    </div>
+  );
+}
 function MonitoringAgentsWidget() {
   const agents = [
     {
@@ -919,6 +1030,7 @@ export default function HomePage() {
                 <>
                   <MonitoringAgentsWidget />
                   <PickUpWhereYouLeftOff />
+                  <BotInstallCTAs />
                 </>
               }
               extraSuggestions={[
@@ -947,6 +1059,22 @@ export default function HomePage() {
           <Sidebar />
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
             <TopBar />
+            {/* Deprecation notice */}
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 10,
+              padding: '9px 20px',
+              backgroundColor: '#fffbeb',
+              borderBottom: '1px solid #fde68a',
+              flexShrink: 0,
+            }}>
+              <svg width={15} height={15} viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <p style={{ fontSize: 13, color: '#92400e', margin: 0 }}>
+                <strong>This view is being deprecated.</strong> The app-tile homepage will be replaced by the AI agent experience shown in the April 2026 milestone onwards.
+              </p>
+            </div>
             <div style={{ flex: 1, overflowY: 'auto', backgroundColor: '#f9fafb', padding: '24px 28px' }}>
               <div style={{ maxWidth: 920 }}>
                 <MyFavorites />
