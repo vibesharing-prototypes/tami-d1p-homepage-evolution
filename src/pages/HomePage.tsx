@@ -378,6 +378,15 @@ function DirApptHeader() {
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        {/* FPO badge */}
+        <span style={{
+          fontSize: 11, fontWeight: 600, color: '#92400e',
+          backgroundColor: '#fef3c7', border: '1px solid #fde68a',
+          borderRadius: 5, padding: '3px 8px', whiteSpace: 'nowrap',
+          letterSpacing: '0.01em', marginRight: 8,
+        }}>
+          FPO — not the final nav design
+        </span>
         <button style={{
           background: 'none', border: 'none', cursor: 'pointer',
           padding: 7, borderRadius: 8,
@@ -681,7 +690,7 @@ function BotInstallCTAs() {
     <div style={{ marginTop: 36 }}>
       <div style={{ marginBottom: 10 }}>
         <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', color: '#6b7280', margin: '0 0 3px', textTransform: 'uppercase' }}>
-          Bring DilAgent to your team
+          Diligent works where you do
         </p>
         <p style={{ fontSize: 13, color: '#9ca3af', margin: 0 }}>
           Get agent alerts and run tasks directly from where your team works.
