@@ -678,20 +678,36 @@ function DirApptAgentView({ featureSection, extraSuggestions = [], headline, des
 function MonitoringAgentsWidget() {
   const agents = [
     {
-      id: 'vendor',
-      label: 'Vendor Intelligence',
-      status: 'CloudSecure incident',
-      time: 'Last 32 min ago',
+      id: 'compliance',
+      label: 'Compliance Obligations',
+      status: '3 new obligations: EU AI Act updates',
+      time: '14 min ago',
       dot: '#CC2027',
     },
     {
       id: 'board',
-      label: 'Board Materials Monitor',
-      status: "Gap: materials don't reflect risks",
-      time: 'Last 1 hr ago',
+      label: 'Board Composition',
+      status: 'Director tenure threshold: 2 members approaching',
+      time: '47 min ago',
+      dot: '#D97706',
+    },
+    {
+      id: 'audit',
+      label: 'Audit Readiness',
+      status: 'Evidence gap detected in SOX controls',
+      time: '1 hr ago',
+      dot: '#CC2027',
+    },
+    {
+      id: 'policy',
+      label: 'Policy Attestation',
+      status: 'Code of Conduct deadline in 3 days — 6% outstanding',
+      time: '2 hr ago',
       dot: '#D97706',
     },
   ];
+
+  const tickerItems = [...agents, ...agents];
 
   return (
     <div style={{
@@ -710,26 +726,31 @@ function MonitoringAgentsWidget() {
           <path d="M9 18l6-6-6-6"/>
         </svg>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', flex: 1, flexWrap: 'wrap' }}>
-        {agents.map((agent, i) => (
-          <div key={agent.id} style={{
-            display: 'flex', alignItems: 'center', gap: 8,
-            padding: '10px 20px',
-            borderRight: i < agents.length - 1 ? '1px solid #e5e7eb' : 'none',
-            cursor: 'pointer',
-          }}>
-            <div style={{
-              width: 8, height: 8, borderRadius: '50%',
-              backgroundColor: agent.dot, flexShrink: 0,
-              boxShadow: `0 0 0 2px ${agent.dot}30`,
-            }} />
-            <span style={{ fontSize: 13, fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>
-              {agent.label}
-            </span>
-            <span style={{ fontSize: 13, color: '#6b7280', whiteSpace: 'nowrap' }}>{agent.status}</span>
-            <span style={{ fontSize: 12, color: '#9ca3af', whiteSpace: 'nowrap' }}>{agent.time}</span>
-          </div>
-        ))}
+      <div className="agent-ticker-wrap">
+        <div className="agent-ticker-track">
+          {tickerItems.map((agent, i) => (
+            <div key={`${agent.id}-${i}`} style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              padding: '10px 28px',
+              borderRight: '1px solid #e5e7eb',
+              cursor: 'pointer',
+            }}>
+              <div
+                className="agent-dot-pulse"
+                style={{
+                  width: 8, height: 8, borderRadius: '50%',
+                  backgroundColor: agent.dot, flexShrink: 0,
+                  ['--dot-pulse-color' as string]: `${agent.dot}55`,
+                }}
+              />
+              <span style={{ fontSize: 13, fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>
+                {agent.label}
+              </span>
+              <span style={{ fontSize: 13, color: '#6b7280', whiteSpace: 'nowrap' }}>{agent.status}</span>
+              <span style={{ fontSize: 12, color: '#9ca3af', whiteSpace: 'nowrap' }}>{agent.time}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -737,10 +758,10 @@ function MonitoringAgentsWidget() {
 
 function PickUpWhereYouLeftOff() {
   const items = [
-    { app: 'Boards',         date: 'Jan 16', summary: 'Finalized Q1 board meeting agenda and uploaded supporting materials.' },
-    { app: 'Entities',       date: 'Jan 15', summary: 'Verified annual report filings for 3 subsidiaries; all jurisdictions current.' },
-    { app: 'Policy Manager', date: 'Jan 14', summary: 'Reviewed attestation status for updated Code of Conduct: 94% completion.' },
-    { app: 'AI Reporting',   date: 'Jan 12', summary: 'Generated executive summary of legal department KPIs for leadership review.' },
+    { app: 'Boards',               date: 'Mar 26', summary: 'Reviewed materials for the Q2 board meeting; 2 agenda items flagged for sign-off.' },
+    { app: 'Director Appointment', date: 'Mar 25', summary: 'Completed governance assessment for nominee Sarah Chen — awaiting committee approval.' },
+    { app: 'Audit Report AI',      date: 'Mar 24', summary: 'AI-generated Q1 internal controls report drafted and sent to audit committee for review.' },
+    { app: 'Risk Manager',         date: 'Mar 22', summary: 'Closed 4 AI-surfaced emerging risks; 1 escalated to the board risk committee.' },
   ];
 
   return (
@@ -853,7 +874,7 @@ export default function HomePage() {
           <DirApptHeader />
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
             <DirApptAgentView
-              headline="Your compliance agent is standing by"
+              headline="Your compliance agent is now online"
               description="I can help you navigate compliance workflows — tracking obligations, reviewing board composition, surfacing risks, and keeping your organisation audit-ready."
               extraSuggestions={[{
                 id: 'compliance-progress',
@@ -869,7 +890,7 @@ export default function HomePage() {
           <DirApptHeader />
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
             <DirApptAgentView
-              headline="Your audit agent is standing by"
+              headline="Your audit agent is ready when you are"
               description="I can help you run end-to-end audit reports — from investigation and evidence gathering to synthesis, veracity scoring, and final approval."
               extraSuggestions={[
                 {
@@ -892,7 +913,7 @@ export default function HomePage() {
           <DirApptHeader />
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
             <DirApptAgentView
-              headline="Your agent hub is ready"
+              headline="Your team of agents is ready to work"
               description="Your AI agents are actively monitoring risk, compliance, and governance across your organisation — ask anything or pick up where you left off."
               featureSection={
                 <>

@@ -1,2 +1,35 @@
 @import "@diligentcorp/atlas-react-bundle/styles";
 @import "@diligentcorp/atlas-react-bundle/global-nav.css";
+
+/* ── Monitoring Agents Widget ───────────────────────────────────────────── */
+@keyframes agent-dot-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--dot-pulse-color); }
+  60%       { box-shadow: 0 0 0 7px transparent; }
+}
+
+@keyframes agent-ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.agent-dot-pulse {
+  animation: agent-dot-pulse 2.2s ease-in-out infinite;
+}
+
+.agent-ticker-wrap {
+  overflow: hidden;
+  flex: 1;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+}
+
+.agent-ticker-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: agent-ticker 45s linear infinite;
+}
+
+.agent-ticker-wrap:hover .agent-ticker-track {
+  animation-play-state: paused;
+}
